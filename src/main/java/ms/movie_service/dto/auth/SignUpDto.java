@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 @Getter
 @Setter
-public class SignInDto {
+public class SignUpDto {
 
     @Length(min = 2, message = "Minimum length for name 2")
     @NotBlank(message = "Name cannot be null and empty")

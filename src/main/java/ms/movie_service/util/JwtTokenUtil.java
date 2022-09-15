@@ -1,6 +1,11 @@
-package ms.movie_service.config;
+package ms.movie_service.util;
 
 import io.jsonwebtoken.*;
+import ms.movie_service.config.CustomUserDetails;
+import org.aspectj.bridge.MessageUtil;
+import org.aspectj.weaver.bcel.BcelTypeMunger;
+import org.aspectj.weaver.tools.DefaultTrace;
+import org.slf4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +13,8 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
+
+    Logger logger = null;
     private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
     private final String issuer = "movie.uz";
 
@@ -58,15 +65,15 @@ public class JwtTokenUtil {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (SignatureException ex) {
-            // logger.error("Invalid JWT signature - {}", ex.getMessage());
+            logger.error("Invalid JWT signature - {}", ex.getMessage());
         } catch (MalformedJwtException ex) {
-            // logger.error("Invalid JWT token - {}", ex.getMessage());
+             logger.error("Invalid JWT token - {}", ex.getMessage());
         } catch (ExpiredJwtException ex) {
-            // logger.error("Expired JWT token - {}", ex.getMessage());
+             logger.error("Expired JWT token - {}", ex.getMessage());
         } catch (UnsupportedJwtException ex) {
-            // logger.error("Unsupported JWT token - {}", ex.getMessage());
+             logger.error("Unsupported JWT token - {}", ex.getMessage());
         } catch (IllegalArgumentException ex) {
-            // logger.error("JWT claims string is empty - {}", ex.getMessage());
+             logger.error("JWT claims string is empty - {}", ex.getMessage());
         }
         return false;
     }

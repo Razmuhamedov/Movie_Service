@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class LoginDto {
+public class AuthDto {
     @Email(message = "This is not email type")
     @NotBlank(message = "Email cannot be null and empty")
     private String email;

@@ -2,24 +2,28 @@ package ms.movie_service.config;
 
 import ms.movie_service.entity.User;
 import ms.movie_service.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-public class CustomUserDetailsSerivce implements UserDetailsService {
+@Component
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public CustomUserDetailsSerivce(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userame) throws UsernameNotFoundException {
         System.out.println("Keldi: loadUserByUsername");
-        Optional<User> optional =userRepository.findByName(userName);
+        Optional<User> optional =this.userRepository.findByEmailAndDeletedAtIsNull(userame);
         optional.orElseThrow(() -> new UsernameNotFoundException("Username not found!"));
 
         User user =optional.get();
