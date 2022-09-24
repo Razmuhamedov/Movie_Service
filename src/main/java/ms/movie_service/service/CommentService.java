@@ -8,6 +8,7 @@ import ms.movie_service.dto.user.UserDto;
 import ms.movie_service.entity.Comment;
 import ms.movie_service.exception.BadRequest;
 import ms.movie_service.repository.CommentRepository;
+import ms.movie_service.util.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,7 +35,7 @@ public class CommentService {
 
     public CommentDto create(CreateCommentDto dto){
         Comment comment = new Comment();
-        comment.setUserId(dto.getUserId());
+        comment.setUserId(SecurityUtil.getUserId());
         comment.setMovieId(dto.getMovieId());
         comment.setContent(dto.getContent());
         comment.setCreatedAt(LocalDateTime.now());
@@ -47,6 +48,7 @@ public class CommentService {
         dto.setUser(userService.convertToDto(comment.getUser(), new UserDto()));
         dto.setMovie(movieService.convertToDto(comment.getMovie(), new MovieDto()));
         dto.setContent(comment.getContent());
+        dto.setCreatedAt(comment.getCreatedAt());
         return dto;
     }
 

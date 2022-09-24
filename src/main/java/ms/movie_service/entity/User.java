@@ -2,6 +2,7 @@ package ms.movie_service.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import ms.movie_service.type.Role;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

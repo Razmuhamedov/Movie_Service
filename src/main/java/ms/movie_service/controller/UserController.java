@@ -71,7 +71,7 @@ public class UserController {
     @GetMapping("/secured/getAllUsers")
     public ResponseEntity<?> getAllUsers(@RequestParam("page") Integer page,
                                          @RequestParam("size") Integer size){
-        List<User> result = userService.getAllUsers(page, size);
+        List<UserDto> result = userService.getAllUsers(page, size);
         return ResponseEntity.ok(result);
     }
 

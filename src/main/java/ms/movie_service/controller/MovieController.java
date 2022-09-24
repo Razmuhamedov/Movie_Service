@@ -3,7 +3,9 @@ package ms.movie_service.controller;
 import ms.movie_service.dto.movie.CreateMovieDto;
 import ms.movie_service.dto.movie.MovieDto;
 import ms.movie_service.dto.movie.MovieFilterDto;
+import ms.movie_service.dto.movie.MovieListResponse;
 import ms.movie_service.service.MovieService;
+import ms.movie_service.type.MovieType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,14 +31,26 @@ public class MovieController {
     @GetMapping("/getAllMovies")
     public ResponseEntity<?> getAllMovies(@RequestParam("page") Integer page,
                                           @RequestParam("size") Integer size){
-        List<MovieDto> result = movieService.getAllMovies(page, size);
-        return ResponseEntity.ok(result);
+        MovieListResponse movieListResponse = new MovieListResponse();
+        movieListResponse.setDtoList(movieService.getAllMovies(page, size));
+        movieListResponse.setCount(movieService.getMoviesCount());
+        return ResponseEntity.ok(movieListResponse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMovie(@PathVariable("id") Integer id){
         MovieDto result = movieService.getMovie(id);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/getAllByType")
+    public ResponseEntity<?> getAllByType(@RequestParam("page") Integer page,
+                                          @RequestParam("size") Integer size,
+                                          @RequestParam("type")MovieType movieType){
+        MovieListResponse movieListResponse = new MovieListResponse();
+        movieListResponse.setDtoList(movieService.getAllByType(page, size, movieType));
+        movieListResponse.setCount(movieService.getMoviesCountByType(movieType));
+        return ResponseEntity.ok(movieListResponse);
     }
 
     @PostMapping("/secured")

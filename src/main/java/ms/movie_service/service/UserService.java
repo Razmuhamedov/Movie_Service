@@ -3,7 +3,7 @@ package ms.movie_service.service;
 import ms.movie_service.dto.user.CreateUserDto;
 import ms.movie_service.dto.user.UserDto;
 import ms.movie_service.dto.user.UserFilterDto;
-import ms.movie_service.entity.Role;
+import ms.movie_service.type.Role;
 import ms.movie_service.entity.User;
 import ms.movie_service.exception.BadRequest;
 import ms.movie_service.exception.EmailNotDelivered;
@@ -126,15 +126,10 @@ public class UserService {
         return  page.stream().map(user -> convertToDto(user, new UserDto())).collect(Collectors.toList());
     }
 
-    //todo: stream
-    public List<User> getAllUsers(Integer page, Integer size) {
+    public List<UserDto> getAllUsers(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<User> pages = userRepository.findAll(pageRequest);
-        List<User> userList = new ArrayList<>();
-        for(User user: pages) {
-            userList.add(user);
-        }
-        return userList;
+        return pages.stream().map(user -> (convertToDto(user, new UserDto()))).collect(Collectors.toList());
     }
 
 

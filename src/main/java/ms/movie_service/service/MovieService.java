@@ -7,9 +7,11 @@ import ms.movie_service.dto.user.UserDto;
 import ms.movie_service.entity.Movie;
 import ms.movie_service.exception.BadRequest;
 import ms.movie_service.repository.MovieRepository;
+import ms.movie_service.type.MovieType;
 import ms.movie_service.util.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +32,16 @@ public class MovieService {
         this.userService = userService;
     }
 
-    public MovieDto createMovie(CreateMovieDto createDto) {
+    public MovieDto createMovie(CreateMovieDto dto) {
         Movie movie = new Movie();
-        movie.setName(createDto.getName());
-        movie.setDescription(createDto.getDescription());
+        movie.setName(dto.getName());
+        movie.setDescription(dto.getDescription());
         movie.setUserId(SecurityUtil.getUserId());
+        movie.setMovieType(dto.getMovieType());
         movie.setCreatedAt(LocalDateTime.now());
+        movie.setReleasedAd(dto.getReleasedAt());
         movie.setStatus(true);
+        movie.setRate(0.0);
         movieRepository.save(movie);
         return convertToDto(movie, new MovieDto());
     }
@@ -52,6 +57,8 @@ public class MovieService {
         dto.setName(movie.getName());
         dto.setDescription(movie.getDescription());
         dto.setRate(movie.getRate());
+        dto.setMovieType(movie.getMovieType());
+        dto.setReleasedAt(movie.getReleasedAd());
         dto.setUser(userService.convertToDto(userService.getEntity(movie.getUserId()), new UserDto()));
         return dto;
     }
@@ -70,6 +77,8 @@ public class MovieService {
         movie.setDescription(dto.getDescription());
         movie.setUserId(dto.getCreatorId());
         movie.setUpdatedAt(LocalDateTime.now());
+        movie.setMovieType(dto.getMovieType());
+        movie.setReleasedAd(dto.getReleasedAt());
         movieRepository.save(movie);
         return convertToDto(movie, new MovieDto());
     }
@@ -109,6 +118,12 @@ public class MovieService {
             if (dto.getMinCreatedDate() != null && dto.getMaxCreatedDate() != null) {
                 predicates.add(criteriaBuilder.between(root.get("createdAt"), dto.getMinCreatedDate(), dto.getMaxCreatedDate()));
             }
+            if(dto.getCountry() != null){
+                predicates.add(criteriaBuilder.equal(root.get("country"), dto.getCountry()));
+            }
+            if(dto.getMinReleasedAt() != null && dto.getMaxReleasedAt() != null){
+                predicates.add(criteriaBuilder.between(root.get("releasedAt"), dto.getMinReleasedAt(), dto.getMaxReleasedAt()));
+            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         } );
         Page<Movie> page = movieRepository.findAll(specification, pageRequest);
@@ -118,12 +133,34 @@ public class MovieService {
 
     //todo: stream
     public List<MovieDto> getAllMovies(Integer page, Integer size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+        Pageable pageRequest = PageRequest.of(page, size);
         Page<Movie> pages = movieRepository.findAll(pageRequest);
         List<MovieDto> movieList = new ArrayList<>();
         for(Movie movie:pages){
-            movieList.add(convertToDto(movie, new MovieDto()));
+            if(movie.getDeletedAt() == null){
+                movieList.add(convertToDto(movie, new MovieDto()));
+            }
         }
         return movieList;
+    }
+
+    public List<MovieDto> getAllByType(Integer page, Integer size, MovieType movieType){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Movie> pages = movieRepository.findAllByMovieTypeAndDeletedAtIsNull(pageable);
+        List<MovieDto> dtoList = new ArrayList<>();
+        for(Movie movie: pages) {
+            if (movie.getMovieType().equals(movieType)) {
+                dtoList.add(convertToDto(movie, new MovieDto()));
+            }
+        }
+        return dtoList;
+    }
+
+    public Long getMoviesCount(){
+        return movieRepository.countMovie();
+    }
+
+    public Long getMoviesCountByType(MovieType movieType) {
+        return movieRepository.countByType(movieType);
     }
 }

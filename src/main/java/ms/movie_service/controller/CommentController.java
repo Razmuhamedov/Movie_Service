@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/v1/comment")
 public class CommentController {
     private final CommentService commentService;
 
@@ -24,19 +24,19 @@ public class CommentController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getByMovieId/{id}")
+    @GetMapping("/secured/getByMovieId/{id}")
     public ResponseEntity<?> getByMovieId(@PathVariable("id") Integer movieId){
         List<CommentDto> result = commentService.getByMovieId(movieId);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getByUserId/{id}")
+    @GetMapping("/secured/getByUserId/{id}")
     public ResponseEntity<?> getByUserId(@PathVariable("id") Integer userId){
         List<CommentDto> result = commentService.getByUserId(userId);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getAllComments")
+    @GetMapping("/secured/getAllComments")
     public ResponseEntity<?> getAllComments(){
         List<CommentDto> result = commentService.getAllComments();
         return ResponseEntity.ok(result);

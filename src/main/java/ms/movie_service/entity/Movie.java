@@ -1,8 +1,11 @@
 package ms.movie_service.entity;
 
 import lombok.Data;
+import ms.movie_service.type.Country;
+import ms.movie_service.type.MovieType;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,6 +18,13 @@ public class Movie {
     private Integer id;
     private String name;
     private String description;
+    private Country country;
+
+    @Column(name = ("released_at"))
+    private LocalDate releasedAd;
+
+    @Column(name = ("type"))
+    private MovieType movieType;
 
     @ManyToOne
     @JoinColumn(name = ("creator_id"), insertable = false, updatable = false)

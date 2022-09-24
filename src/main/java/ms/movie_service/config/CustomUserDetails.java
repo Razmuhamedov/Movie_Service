@@ -3,7 +3,7 @@ package ms.movie_service.config;
 import lombok.Getter;
 import lombok.Setter;
 import ms.movie_service.entity.User;
-import ms.movie_service.entity.Role;
+import ms.movie_service.type.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

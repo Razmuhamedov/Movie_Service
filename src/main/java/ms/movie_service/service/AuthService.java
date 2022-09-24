@@ -5,7 +5,7 @@ import ms.movie_service.util.JwtTokenUtil;
 import ms.movie_service.dto.auth.AuthDto;
 import ms.movie_service.dto.auth.LoginResultDto;
 import ms.movie_service.dto.auth.SignUpDto;
-import ms.movie_service.entity.Role;
+import ms.movie_service.type.Role;
 import ms.movie_service.entity.User;
 import ms.movie_service.exception.BadRequest;
 import ms.movie_service.repository.UserRepository;
@@ -33,7 +33,7 @@ public class AuthService {
     public String signUp(SignUpDto dto) {
         Optional<User> optional = userRepository.findByEmailAndDeletedAtIsNull(dto.getEmail());
         if(optional.isPresent()) {
-            throw new BadRequest("This email already exist");
+            throw new BadRequest("This email already exist!");
         }
         User user = new User();
         user.setName(dto.getName());
@@ -54,7 +54,7 @@ public class AuthService {
     public Boolean sendMessageToEmail(User user) {
         String token = jwtTokenUtil.generateAccessToken(user.getId(), user.getEmail());
         String link = "http://localhost:8080/api/v1/auth/verification/" + token;
-        String subject = "Movie service verification";
+        String subject = "Fantastic Movie verification";
         String content = "Click for verification this link: " + link;
 
         try {
