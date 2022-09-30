@@ -149,4 +149,12 @@ public class UserService {
         userRepository.save(user);
         return "Password updated!";
     }
+
+    public User getUserByEmail(String email){
+        Optional<User> optional = userRepository.findByEmailAndDeletedAtIsNull(email);
+        if(optional.isEmpty()){
+            return null;
+        }
+        return optional.get();
+    }
 }

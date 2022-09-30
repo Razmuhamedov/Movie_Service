@@ -19,6 +19,7 @@ public class Movie {
     private String name;
     private String description;
     private Country country;
+    private String url;
 
     @Column(name = ("released_at"))
     private LocalDate releasedAd;

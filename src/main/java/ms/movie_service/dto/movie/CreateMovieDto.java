@@ -24,4 +24,6 @@ public class CreateMovieDto {
     @NotBlank(message = "Released Date cannot be empty or null")
     private LocalDate releasedAt;
     private Country country;
+    @NotBlank(message = "Input url")
+    private String url;
 }

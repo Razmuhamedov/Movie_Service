@@ -41,6 +41,7 @@ public class MovieService {
         movie.setCreatedAt(LocalDateTime.now());
         movie.setReleasedAd(dto.getReleasedAt());
         movie.setStatus(true);
+        movie.setUrl(dto.getUrl());
         movie.setRate(0.0);
         movieRepository.save(movie);
         return convertToDto(movie, new MovieDto());
@@ -59,6 +60,7 @@ public class MovieService {
         dto.setRate(movie.getRate());
         dto.setMovieType(movie.getMovieType());
         dto.setReleasedAt(movie.getReleasedAd());
+        dto.setUrl(movie.getUrl());
         dto.setUser(userService.convertToDto(userService.getEntity(movie.getUserId()), new UserDto()));
         return dto;
     }
@@ -79,6 +81,7 @@ public class MovieService {
         movie.setUpdatedAt(LocalDateTime.now());
         movie.setMovieType(dto.getMovieType());
         movie.setReleasedAd(dto.getReleasedAt());
+        movie.setUrl(dto.getUrl());
         movieRepository.save(movie);
         return convertToDto(movie, new MovieDto());
     }
@@ -146,7 +149,7 @@ public class MovieService {
 
     public List<MovieDto> getAllByType(Integer page, Integer size, MovieType movieType){
         Pageable pageable = PageRequest.of(page, size);
-        Page<Movie> pages = movieRepository.findAllByMovieTypeAndDeletedAtIsNull(pageable);
+        Page<Movie> pages = movieRepository.findAll(pageable);
         List<MovieDto> dtoList = new ArrayList<>();
         for(Movie movie: pages) {
             if (movie.getMovieType().equals(movieType)) {

@@ -19,4 +19,5 @@ public class MovieDto {
     private MovieType movieType;
     private LocalDate releasedAt;
     private Country country;
+    private String url;
 }

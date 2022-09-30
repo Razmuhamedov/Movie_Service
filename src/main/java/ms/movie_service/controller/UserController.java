@@ -51,7 +51,12 @@ public class UserController {
                                             @RequestParam("newPassword") String newPassword){
         String result = userService.changePassword(oldPassword, newPassword);
         return ResponseEntity.ok(result);
+    }
 
+    @GetMapping("/getByEmail/{email}")
+    public ResponseEntity<?> getByEmail(@PathVariable("email") String email){
+        User result = userService.getUserByEmail(email);
+        return ResponseEntity.ok(result);
     }
 
     // -----------------admin----------------------
