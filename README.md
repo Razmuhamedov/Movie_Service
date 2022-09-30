@@ -1,0 +1,1 @@
+Technologies: Spring JPA, Postgresql
