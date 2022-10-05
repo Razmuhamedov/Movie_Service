@@ -35,7 +35,7 @@ public class RateService {
         this.movieRepository = movieRepository;
     }
 
-    public RateDto createRate(CreateRateDto dto){
+    public String createRate(CreateRateDto dto){
         Rate rate = new Rate();
         Optional<Rate> optional = rateRepository.findByUserIdAndMovieId(dto.getUserId(), dto.getMovieId());
         optional.ifPresent(value -> deleteRate(value.getId()));
@@ -48,7 +48,7 @@ public class RateService {
         Movie movie = movieService.getEntity(dto.getMovieId());
         movie.setRate(rateMovie(dto.getMovieId()));
         movieRepository.save(movie);
-        return convertToDto(rate, new RateDto());
+        return "Your rate accepted";
     }
 
     public List<RateDto> getAll(){

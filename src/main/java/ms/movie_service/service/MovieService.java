@@ -48,7 +48,7 @@ public class MovieService {
     }
 
     public Movie getEntity(Integer movieId){
-        Optional<Movie> optional = movieRepository.findById(movieId);
+        Optional<Movie> optional = movieRepository.findByIdAndDeletedAtIsNull(movieId);
         if(optional.isEmpty()) throw new BadRequest("Movie not found!");
         return optional.get();
     }

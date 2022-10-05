@@ -22,7 +22,7 @@ public class RateController {
 
     @PostMapping("/createRate")
     public ResponseEntity<?> createRate(@RequestBody CreateRateDto dto){
-        RateDto result = rateService.createRate(dto);
+        String result = rateService.createRate(dto);
         return ResponseEntity.ok(result);
     }
 
