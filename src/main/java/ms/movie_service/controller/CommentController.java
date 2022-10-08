@@ -4,6 +4,7 @@ import ms.movie_service.dto.comment.CommentDto;
 import ms.movie_service.dto.comment.CommentFilterDto;
 import ms.movie_service.dto.comment.CreateCommentDto;
 import ms.movie_service.service.CommentService;
+import ms.movie_service.util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,13 @@ public class CommentController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody CreateCommentDto dto){
-        CommentDto result = commentService.create(dto);
+        String result = commentService.create(dto);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/getMyComments")
+    public ResponseEntity<?> getMyComment(){
+        List<CommentDto> result = commentService.getByUserId(SecurityUtil.getUserId());
         return ResponseEntity.ok(result);
     }
 

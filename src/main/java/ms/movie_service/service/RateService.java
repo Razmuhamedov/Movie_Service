@@ -48,7 +48,7 @@ public class RateService {
         Movie movie = movieService.getEntity(dto.getMovieId());
         movie.setRate(rateMovie(dto.getMovieId()));
         movieRepository.save(movie);
-        return "Your rate accepted";
+        return "Your rate is accepted";
     }
 
     public List<RateDto> getAll(){
@@ -146,7 +146,7 @@ public class RateService {
         return dto;
     }
 
-    public Long count() {
-        return rateRepository.count();
+    public Long count(Integer id) {
+        return rateRepository.countRateByUserId(id);
     }
 }

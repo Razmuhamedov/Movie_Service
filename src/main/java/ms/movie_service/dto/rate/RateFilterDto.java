@@ -7,8 +7,8 @@ import ms.movie_service.dto.FilterDto;
 @Getter
 @Setter
 public class RateFilterDto extends FilterDto {
-    private Double minScore;
-    private Double maxScore;
+    private Integer minScore;
+    private Integer maxScore;
     private String userName;
     private String movieName;
 }

@@ -14,7 +14,7 @@ public class Rate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = ("score"))
-    private Double score;
+    private Integer score;
 
     @ManyToOne
     @JoinColumn(name = ("user_id"), insertable = false, updatable = false)

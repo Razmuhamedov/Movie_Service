@@ -9,7 +9,7 @@ import ms.movie_service.dto.user.UserDto;
 @Setter
 public class RateDto {
     private Integer id;
-    private Double score;
+    private Integer score;
     private UserDto user;
     private MovieDto movie;
 }

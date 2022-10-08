@@ -21,4 +21,5 @@ public interface RateRepository extends JpaRepository<Rate, Integer>, JpaSpecifi
     @Query("select r from Rate r where r.userId =:userId and r.movieId =:movieId and r.status=true")
     Optional<Rate> findByUserIdAndMovieId(@Param("userId") Integer userId, @Param("movieId") Integer movieId);
 
+    Long countRateByUserId(Integer id);
 }

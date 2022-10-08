@@ -33,14 +33,14 @@ public class CommentService {
         this.movieService = movieService;
     }
 
-    public CommentDto create(CreateCommentDto dto){
+    public String create(CreateCommentDto dto){
         Comment comment = new Comment();
         comment.setUserId(SecurityUtil.getUserId());
         comment.setMovieId(dto.getMovieId());
         comment.setContent(dto.getContent());
         comment.setCreatedAt(LocalDateTime.now());
         commentRepository.save(comment);
-        return convertToDto(comment, new CommentDto());
+        return "Your comment is accepted";
     }
 
     public CommentDto convertToDto(Comment comment, CommentDto dto){

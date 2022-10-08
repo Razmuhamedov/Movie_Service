@@ -62,9 +62,9 @@ public class RateController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/count")
-    public ResponseEntity<?> count(){
-        Long result = rateService.count();
+    @GetMapping("/countByUser/{id}")
+    public ResponseEntity<?> count(@PathVariable("id") Integer userId){
+        Long result = rateService.count(userId);
         return ResponseEntity.ok(result);
     }
 
